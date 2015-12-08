@@ -45,7 +45,27 @@ function GetOrLogin-AzureRmContext {
             throw 'No Azure account found or specified!'
         }
 
-        # TODO: Ask user about multiple subscriptions, which to use...?
+        # Check to see if multiple subscriptions exist.
+        $subscriptions = Get-AzureRmSubscription
+
+        if ($subscriptions.Length -gt 1) {
+            Write-Host
+            Write-Host "Multiple Azure Subscriptions found:"
+            Write-Host
+
+            for($i = 0; $i -le $subscriptions.Length - 1; $i++) {
+                Write-Host "${i}: $($subscriptions[$i].SubscriptionName)"
+            }
+
+            Write-Host
+            $selectedIndex = Read-Host -Prompt "Enter # to choose"
+
+            $selectedSubscriptionId = $subscriptions[$selectedIndex].SubscriptionId
+
+            Select-AzureRmSubscription -SubscriptionId $selectedSubscriptionId
+
+            Write-Host "Switched to subscription $($subscriptions[$selectedIndex].SubscriptionName) [$selectedSubscriptionId]"
+        }
     }
 
     Write-Output $context
