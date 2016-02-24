@@ -24,4 +24,4 @@ function Exec
 # Make sure all the system level prerequisites that require Admin rights are installed.
 
 # PSake is a tool that coordinates CI tasks.
-exec { nuget install psake -version 4.4.2 }
+exec { .\Tools\nuget.exe install psake -version 4.4.2 }
