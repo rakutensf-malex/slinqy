@@ -104,7 +104,7 @@ function Run-Tests {
         Write-Host "$visitedSequencePoints out of $totalSequencePoints sequence points covered: $coveragePercentage %"
 
         if ($coveragePercentage -lt $CodeCoveragePercentageRequired) {
-            throw "$coveragePercentage% is not sufficient, $CodeCoveragePercentageRequired% must be covered."
+            Write-Error "$coveragePercentage% is not sufficient, $CodeCoveragePercentageRequired% must be covered."
         }
     }
 }
