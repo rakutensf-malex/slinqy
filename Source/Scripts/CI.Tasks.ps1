@@ -23,9 +23,7 @@ properties {
 Task Default -depends Build
 
 Task InstallDependencies -description "Installs all dependencies required to execute the tasks in this script." {
-    exec { 
-        cinst xunit         --version 2.0.0  --confirm
-    }
+
 }
 
 Task Clean -depends InstallDependencies -description "Removes any artifacts that may be present from prior runs of the CI script." {

@@ -71,7 +71,7 @@ function Run-Tests {
         $CodeCoveragePercentageRequired
     )
 
-    $xUnitPath           = Join-Path $Env:ChocolateyInstall 'bin\xunit.console.exe'
+    $xUnitPath           = Join-Path $PSScriptRoot '..\..\Tools\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe'
     $openCoverPath       = Join-Path $PackagesPath 'OpenCover.4.6.166\tools\OpenCover.Console.exe'
     $openCoverOutputPath = Join-Path $ArtifactsPath "coverage.xml"
 

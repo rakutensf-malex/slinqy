@@ -1,4 +1,4 @@
-$psakePath = Join-Path $PSScriptRoot psake.4.4.2\tools\psake
+$psakePath = Join-Path $PSScriptRoot Tools\packages\psake.4.4.2\tools\psake
 $ciTasksPath = Join-Path $PSScriptRoot Source\Scripts\CI.Tasks.ps1
 
 . $psakePath $ciTasksPath $args -parameters @{BasePath=$PSScriptRoot} -nologo -framework 4.6

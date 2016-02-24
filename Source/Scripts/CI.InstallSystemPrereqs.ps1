@@ -23,5 +23,9 @@ function Exec
 
 # Make sure all the system level prerequisites that require Admin rights are installed.
 
-# PSake is a tool that coordinates CI tasks.
-exec { .\Tools\nuget.exe install psake -version 4.4.2 }
+$toolsPath = Join-Path $PSScriptRoot '..\..\Tools'
+$nugetPath = Join-Path $toolsPath nuget.exe
+$packagesConfigPath = Join-Path $toolsPath 'packages.config'
+$packagesDirectory = Join-Path $toolsPath "packages"
+
+exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
