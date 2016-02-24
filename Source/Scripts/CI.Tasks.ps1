@@ -11,12 +11,14 @@ properties {
     $ProductName           = "Slinqy"
     $SourcePath            = Join-Path $BasePath "Source"
     $ArtifactsPath         = Join-Path $BasePath "Artifacts"
+	$ToolsPath             = Join-Path $BasePath "Tools"
     $LogsPath              = Join-Path $ArtifactsPath "Logs"
     $ScriptsPath           = Join-Path $ArtifactsPath "Scripts"
     $PublishedWebsitesPath = Join-Path $ArtifactsPath "_PublishedWebsites"
     $SolutionFileName      = "$ProductName.sln"
     $SolutionPath          = Join-Path $SourcePath $SolutionFileName
     $PackagesPath          = Join-Path $SourcePath "packages"
+	$CiPackagesPath        = Join-Path $ToolsPath "packages"
 }
 
 # Define the Task to call when none was specified by the caller.
@@ -52,8 +54,8 @@ Task LoadSettings -description "Loads the environment specific settings." {
 
 Task Build -depends Clean -description "Compiles all source code." {
     $BuildVersion = Get-BuildVersion
-
-    exec { nuget restore $SolutionPath }
+	$NuGetPath = Join-Path $ToolsPath 'nuget.exe'
+    exec { . $NuGetPath restore $SolutionPath }
 
     Write-Host "Building $ProductName $BuildVersion from $SolutionPath"
     
