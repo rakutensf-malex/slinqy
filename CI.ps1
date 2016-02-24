@@ -1,4 +1,4 @@
-Get-ChildItem
+Write-Host "PSScriptRoot: $PSScriptRoot"
 
 .\psake.4.4.2\tools\psake .\Source\Scripts\CI.Tasks.ps1 $args -parameters @{BasePath=$PSScriptRoot} -nologo -framework 4.6
 
