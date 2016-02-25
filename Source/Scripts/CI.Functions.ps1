@@ -76,10 +76,17 @@ function Run-Tests {
     $openCoverOutputPath = Join-Path $ArtifactsPath "coverage.xml"
 
     $currentDir = Get-Location
-	Write-Host "currentDir: $currentDir"
-	Write-Host "ArtifactsPath: $ArtifactsPath"
     Set-Location $ArtifactsPath
-    exec { . $openCoverPath -target:$xUnitPath -targetargs:$TestDlls -returntargetcode -register:user -output:$openCoverOutputPath -filter:'+[Slinqy.Core]*' }
+    exec {
+		. $openCoverPath `
+			-target:$xUnitPath `
+			-targetargs:$TestDlls `
+			-returntargetcode `
+			-register:user `
+			-output:$openCoverOutputPath `
+			-filter:'+[Slinqy.Core]*' `
+			-mergebyhash  
+	}
     Set-Location $currentDir
 
     if ($CodeCoveragePercentageRequired) {
