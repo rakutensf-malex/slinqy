@@ -17,7 +17,6 @@ properties {
     $PublishedWebsitesPath = Join-Path $ArtifactsPath "_PublishedWebsites"
     $SolutionFileName      = "$ProductName.sln"
     $SolutionPath          = Join-Path $SourcePath $SolutionFileName
-    $PackagesPath          = Join-Path $SourcePath "packages"
 	$CiPackagesPath        = Join-Path $ToolsPath "packages"
 }
 
@@ -87,7 +86,7 @@ Task Build -depends Clean -description "Compiles all source code." {
     Write-Host "Unit testing $TestDlls..."
 
     Run-Tests `
-        -PackagesPath  $PackagesPath `
+        -PackagesPath  $CiPackagesPath `
         -ArtifactsPath $ArtifactsPath `
         -TestDlls      $TestDlls `
         -CodeCoveragePercentageRequired 100
@@ -210,7 +209,7 @@ Task FunctionalTest -depends LoadSettings -description 'Tests that the required 
     Write-Host "Running tests in $TestDlls"
 
     Run-Tests `
-        -PackagesPath  $PackagesPath `
+        -PackagesPath  $CiPackagesPath `
         -ArtifactsPath $ArtifactsPath `
         -TestDlls      $TestDlls
 }
