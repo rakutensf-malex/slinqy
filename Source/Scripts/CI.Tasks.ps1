@@ -24,7 +24,8 @@ properties {
 Task Default -depends Build
 
 Task InstallDependencies -description "Installs all dependencies required to execute the tasks in this script." {
-
+	# TODO: REMOVE
+	Get-Module -ListAvailable
 }
 
 Task Clean -depends InstallDependencies -description "Removes any artifacts that may be present from prior runs of the CI script." {
