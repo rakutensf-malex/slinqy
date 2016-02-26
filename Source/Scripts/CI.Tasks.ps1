@@ -181,7 +181,7 @@ Task Deploy -depends LoadSettings -description "Deploys the physical infrastruct
         -ServiceBusConnectionString $serviceBusConnectionString
 
     # Hit the Example App website to make sure it's alive
-    $exampleWebsiteHostName = (Get-AzureRmWebApp -Name $Settings.ExampleAppSiteName).HostNames
+    $exampleWebsiteHostName = (Get-AzureRmWebApp -Name $Settings.ExampleAppSiteName -ResourceGroupName $Settings.ResourceGroupName).HostNames
 
     Write-Host "Checking $exampleWebsiteHostName..." -NoNewline
 
