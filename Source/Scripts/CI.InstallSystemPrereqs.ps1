@@ -33,8 +33,15 @@ exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDire
 $packageManagementInstallerPath = Join-Path $toolsPath 'PackageManagement_x64.msi'
 exec { . $packageManagementInstallerPath /quiet }
 
+Import-Module PowerShellGet
+
 $modulesPath = Join-Path $toolsPath 'PowerShellModules'
-New-Item -Path $modulesPath -ItemType Directory -Force
+New-Item `
+	-Path     $modulesPath `
+	-ItemType Directory `
+	-Force | 
+		Out-Null
+
 Save-Module -Name Azure -RequiredVersion 1.0.4 -Force -Path $modulesPath
 
 #Save the current value in the $p variable.
