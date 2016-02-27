@@ -42,3 +42,6 @@ $p += ";$modulesPath"
 
 #Add the paths in $p to the PSModulePath value.
 [Environment]::SetEnvironmentVariable("PSModulePath", $p)
+
+$packageManagementInstallerPath = Join-Path $toolsPath 'PackageManagement_x64.msi'
+exec { . $packageManagementInstallerPath /quiet }
