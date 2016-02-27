@@ -29,3 +29,16 @@ $packagesConfigPath = Join-Path $toolsPath 'packages.config'
 $packagesDirectory = Join-Path $toolsPath "packages"
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
+
+$modulesPath = Join-Path $toolsPath 'PowerShellModules'
+New-Item -Path $modulesPath -ItemType Directory -Force
+Save-Module -Name Azure -RequiredVersion 1.0.4 -Force -Path $modulesPath
+
+#Save the current value in the $p variable.
+$p = [Environment]::GetEnvironmentVariable("PSModulePath")
+
+#Add the new path to the $p variable. Begin with a semi-colon separator.
+$p += ";$modulesPath"
+
+#Add the paths in $p to the PSModulePath value.
+[Environment]::SetEnvironmentVariable("PSModulePath", $p)
