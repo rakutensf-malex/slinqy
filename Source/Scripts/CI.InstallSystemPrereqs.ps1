@@ -30,6 +30,9 @@ $packagesDirectory = Join-Path $toolsPath "packages"
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
 
+$packageManagementInstallerPath = Join-Path $toolsPath 'PackageManagement_x64.msi'
+exec { . $packageManagementInstallerPath /quiet }
+
 $modulesPath = Join-Path $toolsPath 'PowerShellModules'
 New-Item -Path $modulesPath -ItemType Directory -Force
 Save-Module -Name Azure -RequiredVersion 1.0.4 -Force -Path $modulesPath
@@ -42,6 +45,3 @@ $p += ";$modulesPath"
 
 #Add the paths in $p to the PSModulePath value.
 [Environment]::SetEnvironmentVariable("PSModulePath", $p)
-
-$packageManagementInstallerPath = Join-Path $toolsPath 'PackageManagement_x64.msi'
-exec { . $packageManagementInstallerPath /quiet }
