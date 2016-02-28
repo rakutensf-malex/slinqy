@@ -36,6 +36,8 @@ function Add-Module
 
 	#Add the paths in $p to the PSModulePath value.
 	[Environment]::SetEnvironmentVariable("PSModulePath", $p)
+
+	Write-Host "Added $Path to PSModulePath."
 }
 
 # Make sure all the system level prerequisites that require Admin rights are installed.
