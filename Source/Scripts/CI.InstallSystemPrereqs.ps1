@@ -50,6 +50,7 @@ $p += ";$modulesPath"
 		Write-Host $module.Name $module.Version
 	}
 
+Import-Module PackageManagement -RequiredVersion 1.0.0.0
 Import-Module PowerShellGet -RequiredVersion 1.0
 
 New-Item `
