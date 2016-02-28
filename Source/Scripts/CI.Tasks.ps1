@@ -24,14 +24,6 @@ properties {
 Task Default -depends Build
 
 Task InstallDependencies -description "Installs all dependencies required to execute the tasks in this script." {
-	# TODO: REMOVE
-	Write-Host "PowerShell:"
-	Write-Host $PSVersionTable.PSVersion
-	Write-Host
-	Write-Host "Available Modules:"
-	foreach ($module in Get-Module -ListAvailable) {
-		Write-Host $module.Name $module.Version
-	}
 }
 
 Task Clean -depends InstallDependencies -description "Removes any artifacts that may be present from prior runs of the CI script." {

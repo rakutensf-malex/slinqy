@@ -38,6 +38,15 @@ $packageManagementInstallerLogPath = Join-Path $toolsPath "..\Artifacts\$package
 
 exec { . $packageManagementInstallerPath /passive /log $packageManagementInstallerLogPath /norestart }
 
+	# TODO: REMOVE
+	Write-Host "PowerShell:"
+	Write-Host $PSVersionTable.PSVersion
+	Write-Host
+	Write-Host "Available Modules:"
+	foreach ($module in Get-Module -ListAvailable) {
+		Write-Host $module.Name $module.Version
+	}
+
 Import-Module PowerShellGet
 
 $modulesPath = Join-Path $toolsPath 'PowerShellModules'
