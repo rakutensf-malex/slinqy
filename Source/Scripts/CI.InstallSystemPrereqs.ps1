@@ -21,6 +21,23 @@ function Exec
     }
 }
 
+function Add-Module 
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Position=0,Mandatory=1)][string]$Path
+    )
+
+	#Save the current value in the $p variable.
+	$p = [Environment]::GetEnvironmentVariable("PSModulePath")
+
+	#Add the new path to the $p variable. Begin with a semi-colon separator.
+	$p += ";$Path"
+
+	#Add the paths in $p to the PSModulePath value.
+	[Environment]::SetEnvironmentVariable("PSModulePath", $p)
+}
+
 # Make sure all the system level prerequisites that require Admin rights are installed.
 
 $rootPath           = Join-Path $PSScriptRoot '..\..\'
@@ -32,14 +49,10 @@ $modulesPath        = Join-Path $toolsPath    'PowerShellModules'
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
 
-#Save the current value in the $p variable.
-$p = [Environment]::GetEnvironmentVariable("PSModulePath")
+Write-Host "Adding CI PowerShell modules to PSModulePath..."
 
-#Add the new path to the $p variable. Begin with a semi-colon separator.
-$p += ";$modulesPath"
-
-#Add the paths in $p to the PSModulePath value.
-[Environment]::SetEnvironmentVariable("PSModulePath", $p)
+Add-Module -Path $modulesPath\PackageManagement\1.0.0.0
+Add-Module -Path $modulesPath\PowerShellGet
 
 	# TODO: REMOVE
 	Write-Host "PowerShell:"
@@ -50,14 +63,10 @@ $p += ";$modulesPath"
 		Write-Host $module.Name $module.Version
 	}
 
-Import-Module PackageManagement -RequiredVersion 1.0.0.0
-Import-Module PowerShellGet -RequiredVersion 1.0
+Write-Host 'Loading PowerShell modules...'
 
-New-Item `
-	-Path     $modulesPath `
-	-ItemType Directory `
-	-Force | 
-		Out-Null
+Import-Module PackageManagement -RequiredVersion 1.0.0.0
+Import-Module PowerShellGet     -RequiredVersion 1.0
 
 $azureModulePath = Join-Path $modulesPath 'Azure'
 if (-not (Test-Path $azureModulePath)) {
@@ -67,3 +76,5 @@ if (-not (Test-Path $azureModulePath)) {
 		-Path $modulesPath `
 		-MinimumVersionForce
 }
+
+Add-Module -Path $modulesPath\Azure\1.0.4
