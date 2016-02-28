@@ -29,14 +29,18 @@ $nugetPath          = Join-Path $toolsPath    'nuget.exe'
 $artifactsPath      = Join-Path $rootPath     'Artifacts'
 $packagesConfigPath = Join-Path $toolsPath    'packages.config'
 $packagesDirectory  = Join-Path $toolsPath    'packages'
+$modulesPath        = Join-Path $toolsPath    'PowerShellModules'
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
 
-$packageInstaller				   = 'PackageManagement_x64.msi'
-$packageManagementInstallerPath	   = Join-Path $toolsPath $packageInstaller
-$packageManagementInstallerLogPath = Join-Path $toolsPath "..\Artifacts\$packageInstaller.log.txt"
+#Save the current value in the $p variable.
+$p = [Environment]::GetEnvironmentVariable("PSModulePath")
 
-exec { . $packageManagementInstallerPath /passive /log $packageManagementInstallerLogPath /norestart }
+#Add the new path to the $p variable. Begin with a semi-colon separator.
+$p += ";$modulesPath"
+
+#Add the paths in $p to the PSModulePath value.
+[Environment]::SetEnvironmentVariable("PSModulePath", $p)
 
 	# TODO: REMOVE
 	Write-Host "PowerShell:"
@@ -47,9 +51,7 @@ exec { . $packageManagementInstallerPath /passive /log $packageManagementInstall
 		Write-Host $module.Name $module.Version
 	}
 
-Import-Module PowerShellGet
-
-$modulesPath = Join-Path $toolsPath 'PowerShellModules'
+Import-Module PowerShellGet -RequiredVersion 1.0
 
 New-Item `
 	-Path     $modulesPath `
@@ -57,13 +59,11 @@ New-Item `
 	-Force | 
 		Out-Null
 
-Save-Module -Name Azure -RequiredVersion 1.0.4 -Force -Path $modulesPath
-
-#Save the current value in the $p variable.
-$p = [Environment]::GetEnvironmentVariable("PSModulePath")
-
-#Add the new path to the $p variable. Begin with a semi-colon separator.
-$p += ";$modulesPath"
-
-#Add the paths in $p to the PSModulePath value.
-[Environment]::SetEnvironmentVariable("PSModulePath", $p)
+$azureModulePath = Join-Path $modulesPath 'Azure'
+if (-not (Test-Path $azureModulePath)) {
+	Save-Module `
+		-Name Azure `
+		-RequiredVersion 1.0.4 `
+		-Path $modulesPath `
+		-MinimumVersionForce
+}
