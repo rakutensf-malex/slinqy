@@ -8,4 +8,4 @@ environment-settings.json
 *.suo
 StyleCop.Cache
 environment-secrets.config
-PowerShellModules
+Tools/PowerShellModules/Azure/

@@ -26,7 +26,6 @@ function Exec
 $rootPath           = Join-Path $PSScriptRoot '..\..\'
 $toolsPath          = Join-Path $rootPath     'Tools'
 $nugetPath          = Join-Path $toolsPath    'nuget.exe'
-$artifactsPath      = Join-Path $rootPath     'Artifacts'
 $packagesConfigPath = Join-Path $toolsPath    'packages.config'
 $packagesDirectory  = Join-Path $toolsPath    'packages'
 $modulesPath        = Join-Path $toolsPath    'PowerShellModules'
