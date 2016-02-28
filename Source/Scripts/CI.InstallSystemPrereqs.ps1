@@ -23,19 +23,25 @@ function Exec
 
 # Make sure all the system level prerequisites that require Admin rights are installed.
 
-$toolsPath = Join-Path $PSScriptRoot '..\..\Tools'
-$nugetPath = Join-Path $toolsPath nuget.exe
-$packagesConfigPath = Join-Path $toolsPath 'packages.config'
-$packagesDirectory = Join-Path $toolsPath "packages"
+$rootPath           = Join-Path $PSScriptRoot '..\..\'
+$toolsPath          = Join-Path $rootPath     'Tools'
+$nugetPath          = Join-Path $toolsPath    'nuget.exe'
+$artifactsPath      = Join-Path $rootPath     'Artifacts'
+$packagesConfigPath = Join-Path $toolsPath    'packages.config'
+$packagesDirectory  = Join-Path $toolsPath    'packages'
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
 
-$packageManagementInstallerPath = Join-Path $toolsPath 'PackageManagement_x64.msi'
-exec { . $packageManagementInstallerPath /quiet }
+$packageInstaller				   = 'PackageManagement_x64.msi'
+$packageManagementInstallerPath	   = Join-Path $toolsPath $packageInstaller
+$packageManagementInstallerLogPath = Join-Path $toolsPath "..\Artifacts\$packageInstaller.log.txt"
+
+exec { . $packageManagementInstallerPath /passive /log $packageManagementInstallerLogPath /norestart }
 
 Import-Module PowerShellGet
 
 $modulesPath = Join-Path $toolsPath 'PowerShellModules'
+
 New-Item `
 	-Path     $modulesPath `
 	-ItemType Directory `
