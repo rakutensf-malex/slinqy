@@ -28,6 +28,8 @@ function Add-Module
         [Parameter(Position=0,Mandatory=1)][string]$Path
     )
 
+	$Path = Resolve-Path $Path
+
 	#Save the current value in the $p variable.
 	$p = [Environment]::GetEnvironmentVariable("PSModulePath")
 
@@ -47,14 +49,13 @@ $toolsPath          = Join-Path $rootPath     'Tools'
 $nugetPath          = Join-Path $toolsPath    'nuget.exe'
 $packagesConfigPath = Join-Path $toolsPath    'packages.config'
 $packagesDirectory  = Join-Path $toolsPath    'packages'
-$modulesPath        = Join-Path $toolsPath    'PowerShellModules'
+$modulesPath        = Join-Path $toolsPath    'PowerShellModules\'
 
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
 
 Write-Host "Adding CI PowerShell modules to PSModulePath..."
 
-Add-Module -Path $modulesPath\PackageManagement\1.0.0.0
-Add-Module -Path $modulesPath\PowerShellGet
+Add-Module -Path $modulesPath
 
 	# TODO: REMOVE
 	Write-Host "PowerShell:"
@@ -78,5 +79,3 @@ if (-not (Test-Path $azureModulePath)) {
 		-Path $modulesPath `
 		-MinimumVersionForce
 }
-
-Add-Module -Path $modulesPath\Azure\1.0.4
