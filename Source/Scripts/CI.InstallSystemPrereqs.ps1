@@ -59,7 +59,7 @@ Add-Module -Path $modulesPath\PowerShellGet
 	# TODO: REMOVE
 	Write-Host "PowerShell:"
 	Write-Host $PSVersionTable.PSVersion
-	Write-Host
+	Write-Host "PSModulePath: ${env:PSModulePath}"
 	Write-Host "Available Modules:"
 	foreach ($module in Get-Module -ListAvailable) {
 		Write-Host $module.Name $module.Version
