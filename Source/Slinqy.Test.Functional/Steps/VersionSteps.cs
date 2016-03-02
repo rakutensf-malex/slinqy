@@ -1,10 +1,10 @@
 ﻿namespace Slinqy.Test.Functional.Steps
 {
     using System.Reflection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Models;
     using Models.ExampleAppPages;
     using TechTalk.SpecFlow;
+    using Xunit;
 
     /// <summary>
     /// Defines steps for using the versioning infrastructure.
@@ -38,16 +38,9 @@
             var websiteVersion = examplePage.Footer.Version;
             var testVersion    = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            var errorMessage = @"
-The version of test code does not match the version of the deployed code, which could be because:
-A) The latest code has not been deployed,
-B) The previous deployment of the latest code failed, or
-C) There is a bug related to versioning.";
-
-            Assert.AreEqual(
+            Assert.Equal(
                 testVersion,
-                websiteVersion,
-                errorMessage
+                websiteVersion
             );
         }
     }

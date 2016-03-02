@@ -1,11 +1,11 @@
 ﻿namespace Slinqy.Test.Functional.Steps
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Models;
     using Models.ExampleAppPages;
     using TechTalk.SpecFlow;
     using Utilities.Polling;
+    using Xunit;
 
     /// <summary>
     /// Defines steps for working with the queues of the Example App.
@@ -72,7 +72,7 @@
             var sentCount     = ContextGet<int>("sentCount");
             var receivedCount = ContextGet<int>("receivedCount");
 
-            Assert.AreEqual(sentCount, receivedCount);
+            Assert.Equal(sentCount, receivedCount);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@
             var receivedMessage = ContextGet<ManageQueueSection>()
                 .QueueClient.ReceiveQueueMessage();
 
-            Assert.AreEqual(
+            Assert.Equal(
                 sentMessage,
                 receivedMessage
             );
