@@ -26,7 +26,7 @@ $packageManagementInstalled = Is-ModuleInstalled `
 
 # PowerShell Package Management
 if (-not $packageManagementInstalled) {
-	exec { & $ciToolsPath\PackageManagement_x64.msi /passive /norestart }
+	Start-Process "$ciToolsPath\PackageManagement_x64.msi" "/passive /norestart" -Wait
 }
 
 $azureCmdletsInstalled = Is-ModuleInstalled `
