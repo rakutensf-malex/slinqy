@@ -198,6 +198,9 @@ function Write-EnvInfo {
 	Write-Host "PowerShell:   $($PSVersionTable.PSVersion)"
 	Write-Host "PSModulePath: ${env:PSModulePath}"
 	Write-Host
+	Write-Host "Loaded Modules:"
+	Write-Host (Get-Module)
+	Write-Host
 	Write-Host "Available Modules:"
 	foreach ($module in Get-Module -ListAvailable) {
 		Write-Host $module.Name $module.Version

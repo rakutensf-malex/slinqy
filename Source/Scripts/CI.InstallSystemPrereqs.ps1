@@ -48,6 +48,9 @@ $azureCmdletsInstalled = Is-ModuleInstalled `
 if (-not $azureCmdletsInstalled) {
 	Write-Host 'Installing Azure 1.0.4...' -NoNewline
 
+	# Remove any previous versions.
+	Remove-Module -Name Azure -Force
+
 	Install-Module `
 		-Name            'Azure' `
 		-RequiredVersion '1.0.4' `
