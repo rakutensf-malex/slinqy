@@ -1,3 +1,6 @@
+# Make sure the script stops if a command fails.
+$ErrorActionPreference = "Stop"
+
 $psakePath = Join-Path $PSScriptRoot Tools\packages\psake.4.4.2\tools\psake
 $ciTasksPath = Join-Path $PSScriptRoot Source\Scripts\CI.Tasks.ps1
 

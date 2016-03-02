@@ -48,11 +48,23 @@ $azureCmdletsInstalled = Is-ModuleInstalled `
 if (-not $azureCmdletsInstalled) {
 	Write-Host 'Installing Azure 1.0.4...' -NoNewline
 
-	# Remove any previous versions.
-	Remove-Module -Name Azure -Force
-
-	Install-Module `
+	Install-Package `
 		-Name            'Azure' `
+		-RequiredVersion '1.0.4' `
+		-Force
+
+	Write-Host 'done!'
+}
+
+$azureCmdletsInstalled = Is-ModuleInstalled `
+	-Name    'AzureRM' `
+	-Version '1.0.4'
+
+if (-not $azureCmdletsInstalled) {
+	Write-Host 'Installing AzureRM 1.0.4...' -NoNewline
+
+	Install-Package `
+		-Name            'AzureRM' `
 		-RequiredVersion '1.0.4' `
 		-Force
 

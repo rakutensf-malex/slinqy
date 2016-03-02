@@ -1,12 +1,13 @@
 # Ensure the Azure PowerShell cmdlets are available
 Remove-Module Azure -Force -ErrorAction SilentlyContinue
 Import-Module Azure -MinimumVersion 1.0.4 -Force | Out-Null
+Import-AzureRM
 
 function Check-AzureResourceGroupExists {
     Param(
         $ResourceGroupName
     )
-
+	
     $resourceGroups = Get-AzureRmResourceGroup
     $appGroup = $resourceGroups | where {$_.ResourceGroupName -eq $ResourceGroupName}
 
