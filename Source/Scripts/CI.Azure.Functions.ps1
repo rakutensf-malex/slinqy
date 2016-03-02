@@ -1,5 +1,5 @@
 # Ensure the Azure PowerShell cmdlets are available
-Import-Module Azure -Force | Out-Null
+Import-Module Azure -MinimumVersion 1.0.4 -Force | Out-Null
 
 function Check-AzureResourceGroupExists {
     Param(
