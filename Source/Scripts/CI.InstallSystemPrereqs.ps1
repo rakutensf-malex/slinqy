@@ -26,7 +26,9 @@ if (-not (Test-Path $env:ChocolateyInstall)) {
 }
 
 # .NET Framework
+cinst DotNet3.5 -y
 cinst DotNet4.6-TargetPack -y
+cinst microsoft-build-tools -y
 
 # PowerShell Package Management
 $packageManagementInstalled = Is-ModuleInstalled `
