@@ -29,6 +29,23 @@ if (-not $packageManagementInstalled) {
 	Start-Process "$ciToolsPath\PackageManagement_x64.msi" "/passive /norestart" -Wait
 }
 
+# VS Web Targets
+# "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets
+$VSPath = Join-Path ${env:ProgramFiles(x86)} "\MSBuild\Microsoft\VisualStudio\v14.0\"
+
+if (-not (Test-Path $VSPath)) {
+	Write-Host 'Installing MSBuild.Microsoft.VisualStudio.Web.targets...'
+
+	exec { & $nugetPath install MSBuild.Microsoft.VisualStudio.Web.targets -OutputDirectory $packagesPath }
+	
+	$tagetsPath = Join-Path $packages 'MSBuild.Microsoft.VisualStudio.Web.targets\tools'
+
+	Copy-Item -Path $tagetsPath -Destination $VSPath -Recurse
+
+	Write-Host 'done!'
+}
+
+# Azure PowerShell cmdlets
 $azureCmdletsInstalled = Is-ModuleInstalled `
 	-Name    'Azure' `
 	-Version '1.0.4'
