@@ -20,6 +20,7 @@ $packagesConfigPath = Join-Path $ciToolsPath  'packages.config'
 $packagesPath       = Join-Path $ciToolsPath  'packages'
 
 # Install CI dependencies that require Admin rights
+
 $packageManagementInstalled = Is-ModuleInstalled `
 	-Name    'PackageManagement' `
 	-Version '1.0.0.0'
@@ -27,22 +28,6 @@ $packageManagementInstalled = Is-ModuleInstalled `
 # PowerShell Package Management
 if (-not $packageManagementInstalled) {
 	Start-Process "$ciToolsPath\PackageManagement_x64.msi" "/passive /norestart" -Wait
-}
-
-# VS Web Targets
-# "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets
-$VSPath = Join-Path ${env:ProgramFiles(x86)} "\MSBuild\Microsoft\VisualStudio\v14.0\"
-
-if (-not (Test-Path $VSPath)) {
-	Write-Host 'Installing MSBuild.Microsoft.VisualStudio.Web.targets...'
-
-	exec { & $nugetPath install MSBuild.Microsoft.VisualStudio.Web.targets -OutputDirectory $packagesPath }
-	
-	$tagetsPath = Join-Path $packagesPath '\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\'
-
-	Copy-Item -Path $tagetsPath -Destination $VSPath -Recurse
-
-	Write-Host 'done!'
 }
 
 # Azure PowerShell cmdlets
@@ -63,5 +48,19 @@ if (-not $azureCmdletsInstalled) {
 
 # Install CI dependencies that don't require Admin rights
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
+
+# VS Web Targets
+# "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets
+$VSPath = Join-Path ${env:ProgramFiles(x86)} "\MSBuild\Microsoft\VisualStudio\v14.0\"
+
+if (-not (Test-Path $VSPath)) {
+	Write-Host 'Installing MSBuild.Microsoft.VisualStudio.Web.targets...'
+
+	$tagetsPath = Join-Path $packagesPath '\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\'
+
+	Copy-Item -Path $tagetsPath -Destination $VSPath -Recurse
+
+	Write-Host 'done!'
+}
 
 Write-EnvInfo
