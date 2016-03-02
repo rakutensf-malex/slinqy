@@ -24,7 +24,7 @@ $packagesPath       = Join-Path $ciToolsPath  'packages'
 iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 
 # .NET Framework
-cinst dotnet4.6 -y
+cinst DotNet4.6-TargetPack -y
 
 # PowerShell Package Management
 $packageManagementInstalled = Is-ModuleInstalled `
