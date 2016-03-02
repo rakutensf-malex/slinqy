@@ -38,7 +38,7 @@ if (-not (Test-Path $VSPath)) {
 
 	exec { & $nugetPath install MSBuild.Microsoft.VisualStudio.Web.targets -OutputDirectory $packagesPath }
 	
-	$tagetsPath = Join-Path $packagesPath 'MSBuild.Microsoft.VisualStudio.Web.targets\tools'
+	$tagetsPath = Join-Path $packagesPath '\MSBuild.Microsoft.VisualStudio.Web.targets.14.0.0\tools\VSToolsPath\'
 
 	Copy-Item -Path $tagetsPath -Destination $VSPath -Recurse
 
