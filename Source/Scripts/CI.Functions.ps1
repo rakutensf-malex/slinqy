@@ -160,14 +160,14 @@ function Validate-PowerShellVersion {
 	[CmdletBinding()]
 	Param(
 		 [Parameter(Position=0,Mandatory=$true)][int]
-		$RequiredMajor
+		$MajorAtLeast
 	)
 
 	$version = $PSVersionTable.PSVersion
 	$major   = $version.Major
 
-	if ($major -ne $RequiredMajor) {
-		throw "Current PowerShell Major Version is $major, $RequiredMajor is required."
+	if ($major -lt $MajorAtLeast) {
+		throw "Current PowerShell Major Version is $major, $MajorAtLeast or later is required."
 	}
 }
 

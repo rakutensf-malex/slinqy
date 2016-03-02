@@ -10,7 +10,7 @@ $ErrorActionPreference = "Stop"
 # First, perform validation for issues the script cannot resolve on its own.
 #requires -RunAsAdministrator
 Validate-WinOSVersion      -RequiredMajor 6
-Validate-PowerShellVersion -RequiredMajor 5
+Validate-PowerShellVersion -MajorAtLeast 4
 
 # Configure paths
 $repoRootPath       = Resolve-Path (Join-Path $PSScriptRoot '..\..\')
