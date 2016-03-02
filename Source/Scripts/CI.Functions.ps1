@@ -1,4 +1,4 @@
-Include "AppVeyor.Functions.ps1"
+. (Join-Path $PSScriptRoot "AppVeyor.Functions.ps1")
 
 # Taken from psake https://github.com/psake/psake
 <#
@@ -139,6 +139,59 @@ function Run-Tests {
             Write-Error "$coveragePercentage% is not sufficient, $CodeCoveragePercentageRequired% must be covered."
         }
     }
+}
+
+function Validate-WinOSVersion {
+	[CmdletBinding()]
+	Param(
+		 [Parameter(Position=0,Mandatory=$true)][int]
+		$RequiredMajor
+	)
+
+	$osVersion = [System.Environment]::OSVersion.Version
+	$osMajor   = $osVersion.Major
+
+	if ($osMajor -ne $RequiredMajor) {
+		throw "Current OS Major Version is $osMajor, $RequiredMajor is required."
+	}
+}
+
+function Validate-PowerShellVersion {
+	[CmdletBinding()]
+	Param(
+		 [Parameter(Position=0,Mandatory=$true)][int]
+		$RequiredMajor
+	)
+
+	$version = $PSVersionTable.PSVersion
+	$major   = $version.Major
+
+	if ($major -ne $RequiredMajor) {
+		throw "Current PowerShell Major Version is $major, $RequiredMajor is required."
+	}
+}
+
+function Is-ModuleInstalled {
+	[CmdletBinding()]
+	Param(
+		 [Parameter(Position=0,Mandatory=$true)][string]
+		$Name,
+		[Parameter(Position=1,Mandatory=$true)][string]
+		$Version
+	)
+
+	$installed      = $false
+	$currentModules = Get-Module -ListAvailable
+
+	foreach ($module in $currentModules){
+		if (($module.Name -eq $Name) -and ($module.Version -eq $Version)) {
+			$installed = $true
+
+			Write-Host "$Name $Version is installed."
+		}
+	}
+
+	Write-Output $installed
 }
 
 function Write-EnvInfo {

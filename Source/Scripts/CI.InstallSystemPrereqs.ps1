@@ -1,14 +1,50 @@
-# Include additional scripts
-Include "CI.Functions.ps1"
+# This script is meant to be run once to provision the local
+# machine for performing continuous integration tasks.
 
-# Make sure all the system level prerequisites that require Admin rights are installed.
+# Make sure the script stops if a command fails.
+$ErrorActionPreference = "Stop"
 
-$rootPath           = Join-Path $PSScriptRoot '..\..\'
-$toolsPath          = Join-Path $rootPath     'Tools'
-$nugetPath          = Join-Path $toolsPath    'nuget.exe'
-$packagesConfigPath = Join-Path $toolsPath    'packages.config'
-$packagesDirectory  = Join-Path $toolsPath    'packages'
+# Include additional scripts.
+. (Join-Path $PSScriptRoot "CI.Functions.ps1")
 
-exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesDirectory }
+# First, perform validation for issues the script cannot resolve on its own.
+#requires -RunAsAdministrator
+Validate-WinOSVersion      -RequiredMajor 6
+Validate-PowerShellVersion -RequiredMajor 5
+
+# Configure paths
+$repoRootPath       = Resolve-Path (Join-Path $PSScriptRoot '..\..\')
+$ciToolsPath        = Join-Path $repoRootPath 'Tools'
+$nugetPath          = Join-Path $ciToolsPath  'nuget.exe'
+$packagesConfigPath = Join-Path $ciToolsPath  'packages.config'
+$packagesPath       = Join-Path $ciToolsPath  'packages'
+
+# Install CI dependencies that require Admin rights
+$packageManagementInstalled = Is-ModuleInstalled `
+	-Name    'PackageManagement' `
+	-Version '1.0.0.0'
+
+# PowerShell Package Management
+if (-not $packageManagementInstalled) {
+	exec { & $ciToolsPath\PackageManagement_x64.msi /passive /norestart }
+}
+
+$azureCmdletsInstalled = Is-ModuleInstalled `
+	-Name    'Azure' `
+	-Version '1.0.4'
+
+if (-not $azureCmdletsInstalled) {
+	Write-Host 'Installing Azure 1.0.4...' -NoNewline
+
+	Install-Module `
+		-Name            'Azure' `
+		-RequiredVersion '1.0.4' `
+		-Force
+
+	Write-Host 'done!'
+}
+
+# Install CI dependencies that don't require Admin rights
+exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
 
 Write-EnvInfo
