@@ -21,7 +21,9 @@ $packagesPath       = Join-Path $ciToolsPath  'packages'
 
 # Install CI dependencies that require Admin rights
 # Chocolatey!
-iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+if (-not (Test-Path $env:ChocolateyInstall)) {
+	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+}
 
 # .NET Framework
 cinst DotNet4.6-TargetPack -y
