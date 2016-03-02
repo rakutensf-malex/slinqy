@@ -20,12 +20,18 @@ $packagesConfigPath = Join-Path $ciToolsPath  'packages.config'
 $packagesPath       = Join-Path $ciToolsPath  'packages'
 
 # Install CI dependencies that require Admin rights
+# Chocolatey!
+iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 
+# .NET Framework
+cint dotnet4.6 -y
+
+# PowerShell Package Management
 $packageManagementInstalled = Is-ModuleInstalled `
 	-Name    'PackageManagement' `
 	-Version '1.0.0.0'
 
-# PowerShell Package Management
+
 if (-not $packageManagementInstalled) {
 	Start-Process "$ciToolsPath\PackageManagement_x64.msi" "/passive /norestart" -Wait
 }
