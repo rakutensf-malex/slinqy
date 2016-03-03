@@ -91,19 +91,21 @@ function Run-Tests {
         $PackagesPath,
         $ArtifactsPath,
         $TestDlls,
+		$TestResultsName,
         $CodeCoveragePercentageRequired
     )
 
     $xUnitPath           = Join-Path $PackagesPath 'xunit.runner.console.2.1.0\tools\xunit.console.exe'
     $openCoverPath       = Join-Path $PackagesPath 'OpenCover.4.6.166\tools\OpenCover.Console.exe'
     $openCoverOutputPath = Join-Path $ArtifactsPath "coverage.xml"
+	$testResultsPath     = Join-Path $ArtifactsPath "$TestResultsName-test-results.xml"
 
     $currentDir = Get-Location
     Set-Location $ArtifactsPath
     exec {
 		. $openCoverPath `
 			-target:$xUnitPath `
-			-targetargs:$TestDlls `
+			-targetargs:"$TestDlls -xml $testResultsPath" `
 			-returntargetcode `
 			-register:user `
 			-output:$openCoverOutputPath `

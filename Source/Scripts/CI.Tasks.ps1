@@ -86,9 +86,10 @@ Task Build -depends Clean -description "Compiles all source code." {
     Write-Host "Unit testing $TestDlls..."
 
     Run-Tests `
-        -PackagesPath  $CiPackagesPath `
-        -ArtifactsPath $ArtifactsPath `
-        -TestDlls      $TestDlls `
+        -PackagesPath    $CiPackagesPath `
+        -ArtifactsPath   $ArtifactsPath `
+        -TestDlls        $TestDlls `
+		-TestResultsName 'Unit' `
         -CodeCoveragePercentageRequired 100
 
     Write-Host "done!"
@@ -209,9 +210,10 @@ Task FunctionalTest -depends LoadSettings -description 'Tests that the required 
     Write-Host "Running tests in $TestDlls"
 
     Run-Tests `
-        -PackagesPath  $CiPackagesPath `
-        -ArtifactsPath $ArtifactsPath `
-        -TestDlls      $TestDlls
+        -PackagesPath    $CiPackagesPath `
+        -ArtifactsPath   $ArtifactsPath `
+        -TestDlls        $TestDlls `
+		-TestResultsName 'Functional'
 }
 
 Task DestroyEnvironment -depends LoadSettings -description "Permanently deletes and removes all services and data from the target environment." {
