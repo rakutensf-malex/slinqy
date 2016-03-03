@@ -108,7 +108,7 @@ Task Deploy -depends LoadSettings -description "Deploys the physical infrastruct
 	# Make sure we're authenticated with Azure so the script can deploy.
     $context = GetOrLogin-AzureRmContext `
         -AzureDeployUser $env:AzureDeployUser `
-        -AzureDeployPass $env:AzureDeployPass
+        -AzureDeployPass $env:AzureDeployPass # TODO: Deal with passwords in a more secure way
 
     Write-Host "Provisioning Resource Group $($Settings.ResourceGroupName) in $($Settings.EnvironmentName) ($($Settings.EnvironmentLocation)) in Azure Subscription $($context.Subscription.SubscriptionName)"
 
