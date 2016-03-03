@@ -194,6 +194,31 @@ function Is-ModuleInstalled {
 	Write-Output $installed
 }
 
+function Ensure-ModuleInstalled {
+	[CmdletBinding()]
+	Param(
+		 [Parameter(Position=0,Mandatory=$true)][string]
+		$Name,
+		[Parameter(Position=1,Mandatory=$true)][string]
+		$Version
+	)
+
+	$isInstalled = Is-ModuleInstalled `
+		-Name    $Name `
+		-Version $Version
+
+	if (-not $isInstalled) {
+		Write-Host "Installing $Name $Version..." -NoNewline
+
+		Install-Package `
+			-Name            $Name `
+			-RequiredVersion $Version `
+			-Force
+
+		Write-Host 'done!'
+	}
+}
+
 function Write-EnvInfo {
 	Write-Host "PowerShell:   $($PSVersionTable.PSVersion)"
 	Write-Host "PSModulePath: ${env:PSModulePath}"

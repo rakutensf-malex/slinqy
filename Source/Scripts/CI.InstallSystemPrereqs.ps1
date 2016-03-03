@@ -22,7 +22,7 @@ $packagesPath       = Join-Path $ciToolsPath  'packages'
 # Install CI dependencies that require Admin rights
 # Chocolatey!
 if (-not (Test-Path $env:ChocolateyInstall)) {
-	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
+	iex ((New-Object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
 # .NET Framework
@@ -35,86 +35,16 @@ $packageManagementInstalled = Is-ModuleInstalled `
 	-Name    'PackageManagement' `
 	-Version '1.0.0.0'
 
-
 if (-not $packageManagementInstalled) {
 	Start-Process "$ciToolsPath\PackageManagement_x64.msi" "/passive /norestart" -Wait
 }
 
 # Azure PowerShell cmdlets
-$azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'Azure.Storage' `
-	-Version '1.0.4'
-
-if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing Azure.Storage 1.0.4...' -NoNewline
-
-	Install-Package `
-		-Name            'Azure.Storage' `
-		-RequiredVersion '1.0.4' `
-		-Force
-
-	Write-Host 'done!'
-}
-
-$azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'AzureRM' `
-	-Version '1.0.4'
-
-if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing AzureRM 1.0.4...' -NoNewline
-
-	Install-Package `
-		-Name            'AzureRM' `
-		-RequiredVersion '1.0.4' `
-		-Force
-
-	Write-Host 'done!'
-}
-
-$azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'AzureRM.profile' `
-	-Version '1.0.4'
-
-if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing AzureRM.profile 1.0.4...' -NoNewline
-
-	Install-Package `
-		-Name            'AzureRM.profile' `
-		-RequiredVersion '1.0.4' `
-		-Force
-
-	Write-Host 'done!'
-}
-
-$azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'AzureRM.Resources' `
-	-Version '1.0.4'
-
-if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing AzureRM.Resources 1.0.4...' -NoNewline
-
-	Install-Package `
-		-Name            'AzureRM.Resources' `
-		-RequiredVersion '1.0.4' `
-		-Force
-
-	Write-Host 'done!'
-}
-
-$azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'AzureRM.Websites' `
-	-Version '1.0.4'
-
-if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing AzureRM.Websites 1.0.4...' -NoNewline
-
-	Install-Package `
-		-Name            'AzureRM.Websites' `
-		-RequiredVersion '1.0.4' `
-		-Force
-
-	Write-Host 'done!'
-}
+Ensure-ModuleInstalled -Name 'Azure.Storage'     -Version '1.0.4'
+Ensure-ModuleInstalled -Name 'AzureRM'           -Version '1.0.4'
+Ensure-ModuleInstalled -Name 'AzureRM.profile'   -Version '1.0.4'
+Ensure-ModuleInstalled -Name 'AzureRM.Resources' -Version '1.0.4'
+Ensure-ModuleInstalled -Name 'AzureRM.Websites'  -Version '1.0.4'
 
 # Install CI dependencies that don't require Admin rights
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
