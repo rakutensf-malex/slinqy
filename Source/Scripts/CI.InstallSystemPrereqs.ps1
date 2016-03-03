@@ -86,6 +86,21 @@ if (-not $azureCmdletsInstalled) {
 	Write-Host 'done!'
 }
 
+$azureCmdletsInstalled = Is-ModuleInstalled `
+	-Name    'AzureRM.Resources' `
+	-Version '1.0.4'
+
+if (-not $azureCmdletsInstalled) {
+	Write-Host 'Installing AzureRM.Resources 1.0.4...' -NoNewline
+
+	Install-Package `
+		-Name            'AzureRM.Resources' `
+		-RequiredVersion '1.0.4' `
+		-Force
+
+	Write-Host 'done!'
+}
+
 # Install CI dependencies that don't require Admin rights
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
 
