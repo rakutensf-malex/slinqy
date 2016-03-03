@@ -120,7 +120,6 @@ if (-not $azureCmdletsInstalled) {
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
 
 # VS Web Targets
-# "C:\Program Files (x86)\MSBuild\Microsoft\VisualStudio\v14.0\WebApplications\Microsoft.WebApplication.targets
 $VSPath = Join-Path ${env:ProgramFiles(x86)} "\MSBuild\Microsoft\VisualStudio\v14.0\"
 
 if (-not (Test-Path $VSPath)) {
