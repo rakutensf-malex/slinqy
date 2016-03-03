@@ -105,9 +105,6 @@ Task Build -depends Clean -description "Compiles all source code." {
 }
 
 Task Deploy -depends LoadSettings -description "Deploys the physical infrastructure, configuration settings and application code required to operate." {
-    Write-Host "ENV user: ${env:AzureDeployUser}"
-	Write-Host "ENV BuildConfiguration: ${env:BuildConfiguration}"
-
 	# Make sure we're authenticated with Azure so the script can deploy.
     $context = GetOrLogin-AzureRmContext `
         -AzureDeployUser $env:AzureDeployUser `
