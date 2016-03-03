@@ -42,14 +42,14 @@ if (-not $packageManagementInstalled) {
 
 # Azure PowerShell cmdlets
 $azureCmdletsInstalled = Is-ModuleInstalled `
-	-Name    'Azure' `
+	-Name    'Azure.Storage' `
 	-Version '1.0.4'
 
 if (-not $azureCmdletsInstalled) {
-	Write-Host 'Installing Azure 1.0.4...' -NoNewline
+	Write-Host 'Installing Azure.Storage 1.0.4...' -NoNewline
 
 	Install-Package `
-		-Name            'Azure' `
+		-Name            'Azure.Storage' `
 		-RequiredVersion '1.0.4' `
 		-Force
 
