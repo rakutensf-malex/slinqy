@@ -101,6 +101,21 @@ if (-not $azureCmdletsInstalled) {
 	Write-Host 'done!'
 }
 
+$azureCmdletsInstalled = Is-ModuleInstalled `
+	-Name    'AzureRM.Websites' `
+	-Version '1.0.4'
+
+if (-not $azureCmdletsInstalled) {
+	Write-Host 'Installing AzureRM.Websites 1.0.4...' -NoNewline
+
+	Install-Package `
+		-Name            'AzureRM.Websites' `
+		-RequiredVersion '1.0.4' `
+		-Force
+
+	Write-Host 'done!'
+}
+
 # Install CI dependencies that don't require Admin rights
 exec { . $nugetPath restore $packagesConfigPath -packagesDirectory $packagesPath }
 
