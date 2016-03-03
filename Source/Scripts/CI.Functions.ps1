@@ -215,7 +215,8 @@ function Ensure-ModuleInstalled {
 		Install-Package `
 			-Name            $Name `
 			-RequiredVersion $Version `
-			-Force
+			-Force |
+				Out-Null
 
 		Write-Host 'done!'
 	}
