@@ -1,4 +1,4 @@
-. (Join-Path $PSScriptRoot "AppVeyor.Functions.ps1")
+. (Join-Path $PSScriptRoot "TFS.Functions.ps1")
 
 # Taken from psake https://github.com/psake/psake
 <#
@@ -24,7 +24,7 @@ function Exec
 }
 
 function Get-BuildVersion {
-    $BuildVersion = Get-AppVeyorBuildVersion
+    $BuildVersion = Get-TFSBuildVersion
 
     if (-not $BuildVersion) {
         $BuildVersion = "0.0.0.0"

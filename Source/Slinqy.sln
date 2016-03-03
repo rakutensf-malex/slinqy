@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{5EF5
 		Scripts\CI.InstallSystemPrereqs.ps1 = Scripts\CI.InstallSystemPrereqs.ps1
 		Scripts\CI.Settings.ps1 = Scripts\CI.Settings.ps1
 		Scripts\CI.Tasks.ps1 = Scripts\CI.Tasks.ps1
+		Scripts\TFS.Functions.ps1 = Scripts\TFS.Functions.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4CC19ED-3901-4F89-9655-D1129B73F63F}"
